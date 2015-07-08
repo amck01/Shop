@@ -9,11 +9,15 @@ import java.util.ArrayList;
  * @author kb0m
  */
 public class Shop {
-
-    public static ArrayList<Product> Cart = new ArrayList<Product>();
+    
+    public static ArrayList<FoodProduct> foodCatalog;
+    public static ArrayList<DrinkProduct> drinkCatalog;
+    public static ArrayList<Product> cart;
         
     public static void main(String[] args) {
         
+        Catalog.initializeCatalog();
+        Cart.initializeCart();
         Shop shop = new Shop();
         shop.mainMenu();
         
@@ -31,7 +35,8 @@ public class Shop {
             case 1:  catalogMenu();
             case 2: viewCart();    
                 
-            case 5:  break;
+            case 5: System.exit(0); 
+                    break;
         }
     }
     
@@ -54,43 +59,71 @@ public class Shop {
     }
 
     private void foodMenu() {
-        String[] foodMenuItems = {"Ice Cream","Pizza","Return to Catalog"};
         
         System.out.println("Food\n-------");
-        Menu.printMenu(foodMenuItems);
+        Catalog.printFoodCatalog();
+        
+        int choice = Validator.getPositiveInt("Item: ");
+        if (choice <= Shop.foodCatalog.size()) {
+            int quantity = Validator.getPositiveInt("Quantity: ");
+            FoodProduct selection = foodCatalog.get(choice-1);
+            selection.setQuantity(quantity);
+            Cart.addToCart(selection);
+            System.out.println("\nItem added to cart!\n");
+            foodMenu();
+        } else {
+            catalogMenu();
+        }
+                
+        /*switch (choice) {
+            case 1:  quantity = Validator.getPositiveInt("Quantity: ");
+                     cart.add(new FoodProduct(foodMenuItems[0],2.50,quantity,100));
+                     System.out.println("Item added to cart!");
+                     foodMenu();
+                     break;
+            case 2:  quantity = Validator.getPositiveInt("Quantity: ");
+                     cart.add(new FoodProduct(foodMenuItems[1],3.00,quantity, 200));
+                     System.out.println("\nItem added to cart!\n");
+                     foodMenu();
+                     break;
+            case 3:  catalogMenu();
+                     break;
+        } */
+    }
+
+    private void drinkMenu() {
+        String[] drinkMenuItems = {"Milk","Soda","Return to Catalog"};
+        
+        System.out.println("Drinks\n-------");
+        Menu.printMenu(drinkMenuItems);
         
         int choice = Validator.getPositiveInt("Item: ");
         int quantity;
                 
         switch (choice) {
             case 1:  quantity = Validator.getPositiveInt("Quantity: ");
-                     Cart.add(new FoodProduct(foodMenuItems[0],2.50,quantity,100));
+                     cart.add(new DrinkProduct(drinkMenuItems[0],2.50,quantity,100));
                      System.out.println("Item added to cart!");
-                     foodMenu();
+                     drinkMenu();
                      break;
             case 2:  quantity = Validator.getPositiveInt("Quantity: ");
-                     Cart.add(new FoodProduct(foodMenuItems[1],3.00,quantity, 200));
+                     cart.add(new DrinkProduct(drinkMenuItems[1],3.00,quantity, 200));
                      System.out.println("\nItem added to cart!\n");
-                     foodMenu();
+                     drinkMenu();
                      break;
             case 3:  catalogMenu();
                      break;
         }
     }
 
-    private void drinkMenu() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void viewCart() {
-        
+    private void viewCart() {        
         NumberFormat numberFormatter = NumberFormat.getCurrencyInstance();
         
-        for(Product item : Cart) {
-            System.out.println("\n" + item.getProductName() + " - " + item.getQuantity());
-            System.out.println("Price: " + numberFormatter.format((item.getQuantity() * item.getPrice())) + "\n");
+        for(Product item : cart) {
+            System.out.print("\n" + item.getProductName() + "\t");
+            System.out.println("Price: " + numberFormatter.format((item.getQuantity() * item.getPrice())));
+            System.out.println(item.getQuantity() + "\n");
         }
         mainMenu();
-    }
-    
+    } 
 }

@@ -12,9 +12,10 @@ package shop;
 public class DrinkProduct extends Product {
     private int ounces;
 
-    public DrinkProduct(String productName, double price, int ounces) {
+    public DrinkProduct(String productName, double price, int quantity, int ounces) {
         this.setProductName(productName);
         this.setPrice(price);
+        this.setQuantity(quantity);
         this.setOunces(ounces);
     }
     
