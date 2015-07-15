@@ -26,7 +26,7 @@ public class Shop {
     private void mainMenu() {
         String[] mainMenuItems = {"Catalog","View Cart","Checkout","Order Lookup","Exit"};
         
-        System.out.println("Shop\n----");
+        System.out.println("\nShop\n----");
         Menu.printMenu(mainMenuItems);
         
         int choice = Validator.getPositiveInt("Choice: ");
@@ -43,7 +43,7 @@ public class Shop {
     private void catalogMenu() {
         String[] catalogMenuItems = {"Food","Drink","Return to Main Menu"};
         
-        System.out.println("Catalog\n-------");
+        System.out.println("\nCatalog\n-------");
         Menu.printMenu(catalogMenuItems);
         
         int choice = Validator.getPositiveInt("Choice: ");
@@ -60,7 +60,7 @@ public class Shop {
 
     private void foodMenu() {
         
-        System.out.println("Food\n-------");
+        System.out.println("\nFood\n-------");
         Catalog.printFoodCatalog();
         
         int choice = Validator.getPositiveInt("Item: ");
@@ -94,7 +94,7 @@ public class Shop {
     private void drinkMenu() {
         String[] drinkMenuItems = {"Milk","Soda","Return to Catalog"};
         
-        System.out.println("Drinks\n-------");
+        System.out.println("\nDrinks\n-------");
         Menu.printMenu(drinkMenuItems);
         
         int choice = Validator.getPositiveInt("Item: ");

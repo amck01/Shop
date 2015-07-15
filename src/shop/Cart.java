@@ -24,7 +24,7 @@ public class Cart {
             Shop.cart.add(selection);
         } else {
             for (Product cartProduct : Shop.cart) {
-                if (selection.getProductName() == cartProduct.getProductName()) {
+                if (selection.getProductName().equals(cartProduct.getProductName())) {
                     cartProduct.setQuantity(cartProduct.getQuantity() + selection.getQuantity());
                     existsInCart = true;
                 }
