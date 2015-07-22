@@ -23,6 +23,8 @@ public class Validator {
             choice = sc.nextInt();
         } while (choice <= 0);
         
+        sc.nextLine();
+        
         return choice;
     }
     

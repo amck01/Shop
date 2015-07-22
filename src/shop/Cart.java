@@ -18,20 +18,27 @@ public class Cart {
     }
     
     public static void addToCart(Product selection) {
-        boolean existsInCart = false;
-        
         if (Shop.cart.isEmpty()) {
             Shop.cart.add(selection);
         } else {
-            for (Product cartProduct : Shop.cart) {
+            /*for (Product cartProduct : Shop.cart) {
                 if (selection.getProductName().equals(cartProduct.getProductName())) {
                     cartProduct.setQuantity(cartProduct.getQuantity() + selection.getQuantity());
+                } else {
+                    Shop.cart.add(selection);
+                }
+            }*/
+            boolean existsInCart = false;
+            for (int i = 0; i < Shop.cart.size(); i++) {
+                if (selection.getProductName().equals(Shop.cart.get(i).getProductName())) {
+                    Shop.cart.get(i).setQuantity(Shop.cart.get(i).getQuantity() + selection.getQuantity());
                     existsInCart = true;
+                    break;
                 }
             }
-        
+                
             if (existsInCart == false) {
-                Shop.cart.add(selection);
+                    Shop.cart.add(selection);
             }
         }
     }

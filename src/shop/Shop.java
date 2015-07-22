@@ -64,7 +64,7 @@ public class Shop {
         Catalog.printFoodCatalog();
         
         int choice = Validator.getPositiveInt("Item: ");
-        if (choice <= Shop.foodCatalog.size()) {
+        if (choice >= 1 && choice <= Shop.foodCatalog.size()) {
             int quantity = Validator.getPositiveInt("Quantity: ");
             FoodProduct selection = foodCatalog.get(choice-1);
             selection.setQuantity(quantity);
@@ -117,10 +117,12 @@ public class Shop {
     }
 
     private void viewCart() {        
+        System.out.print("\nCart\n----");
+        
         NumberFormat numberFormatter = NumberFormat.getCurrencyInstance();
         
         for(Product item : cart) {
-            System.out.print("\n" + item.getProductName() + "\t");
+            System.out.println("\n" + item.getProductName());
             System.out.println("Price: " + numberFormatter.format((item.getQuantity() * item.getPrice())));
             System.out.println(item.getQuantity() + "\n");
         }
