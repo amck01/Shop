@@ -66,7 +66,8 @@ public class Shop {
         int choice = Validator.getPositiveInt("Item: ");
         if (choice >= 1 && choice <= Shop.foodCatalog.size()) {
             int quantity = Validator.getPositiveInt("Quantity: ");
-            FoodProduct selection = foodCatalog.get(choice-1);
+            #FoodProduct selection = foodCatalog.get(choice-1);
+            FoodProduct selection = new FoodProduct(foodCatalog.get(choice-1).getProductName(),foodCatalog.get(choice-1).getPrice(), foodCatalog.get(choice-1).getQuantity(),foodCatalog.get(choice-1).getCalories());
             selection.setQuantity(quantity);
             Cart.addToCart(selection);
             System.out.println("\nItem added to cart!\n");
