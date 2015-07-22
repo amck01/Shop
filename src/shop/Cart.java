@@ -19,7 +19,8 @@ public class Cart {
     
     public static void addToCart(Product selection) {
         if (Shop.cart.isEmpty()) {
-            Shop.cart.add(selection);
+            #Shop.cart.add(selection);
+            Shop.cart.add(new FoodProduct(selection.getProductName(),selection.getPrice(), selection.getQuantity(), selection.getCalories());
         } else {
             /*for (Product cartProduct : Shop.cart) {
                 if (selection.getProductName().equals(cartProduct.getProductName())) {
@@ -38,7 +39,8 @@ public class Cart {
             }
                 
             if (existsInCart == false) {
-                    Shop.cart.add(selection);
+                    #Shop.cart.add(selection);
+                    Shop.cart.add(new FoodProduct(selection.getProductName(),selection.getPrice(), selection.getQuantity(), selection.getCalories());
             }
         }
     }
