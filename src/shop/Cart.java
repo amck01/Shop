@@ -13,6 +13,8 @@ import java.util.ArrayList;
  */
 public class Cart {
     
+    /*TODO - make Cart an actual object with an ArrayList field, and constructor that is called from main method*/
+    
     public static void initializeCart() {
         Shop.cart = new ArrayList<Product>();
     }
