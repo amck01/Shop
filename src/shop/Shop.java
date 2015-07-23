@@ -10,14 +10,11 @@ import java.util.ArrayList;
  */
 public class Shop {
     
-    public static ArrayList<FoodProduct> foodCatalog;
-    public static ArrayList<DrinkProduct> drinkCatalog;
-    public static ArrayList<Product> cart;
+    public static Catalog catalog = new Catalog();
+    public static Cart cart = new Cart();
         
-    public static void main(String[] args) {
-        
-        Catalog.initializeCatalog();
-        Cart.initializeCart();
+    public static void main(String[] args) {      
+        catalog.initializeCatalog();
         Shop shop = new Shop();
         shop.mainMenu();
         
@@ -29,10 +26,10 @@ public class Shop {
         System.out.println("\nShop\n----");
         Menu.printMenu(mainMenuItems);
         
-        int choice = Validator.getPositiveInt("Choice: ");
+        int choice = Validator.getMenuChoice("Choice: ", mainMenuItems.length);
         
         switch (choice) {
-            case 1:  catalogMenu();
+            case 1: catalogMenu();
             case 2: viewCart();    
                 
             case 5: System.exit(0); 
@@ -46,7 +43,7 @@ public class Shop {
         System.out.println("\nCatalog\n-------");
         Menu.printMenu(catalogMenuItems);
         
-        int choice = Validator.getPositiveInt("Choice: ");
+        int choice = Validator.getMenuChoice("Choice: ", catalogMenuItems.length);
         
         switch (choice) {
             case 1:  foodMenu();
@@ -59,15 +56,17 @@ public class Shop {
     }
 
     private void foodMenu() {
-        
         System.out.println("\nFood\n-------");
-        Catalog.printFoodCatalog();
+        catalog.printFoodCatalog();
         
-        int choice = Validator.getPositiveInt("Item: ");
-        if (choice >= 1 && choice <= Shop.foodCatalog.size()) {
-            int quantity = Validator.getPositiveInt("Quantity: ");
-            #FoodProduct selection = foodCatalog.get(choice-1);
-            FoodProduct selection = new FoodProduct(foodCatalog.get(choice-1).getProductName(),foodCatalog.get(choice-1).getPrice(), foodCatalog.get(choice-1).getQuantity(),foodCatalog.get(choice-1).getCalories());
+        int choice = Validator.getMenuChoice("Item: ");
+        if (choice >= 1 && choice <= catalog.foodCatalog.size()) {
+            int quantity = Validator.getMenuChoice("Quantity: ");
+            FoodProduct selection = new FoodProduct(
+                    catalog.foodCatalog.get(choice-1).getProductName(),
+                    catalog.foodCatalog.get(choice-1).getPrice(),
+                    catalog.foodCatalog.get(choice-1).getQuantity(),
+                    catalog.foodCatalog.get(choice-1).getCalories());
             selection.setQuantity(quantity);
             Cart.addToCart(selection);
             System.out.println("\nItem added to cart!\n");
@@ -75,45 +74,26 @@ public class Shop {
         } else {
             catalogMenu();
         }
-                
-        /*switch (choice) {
-            case 1:  quantity = Validator.getPositiveInt("Quantity: ");
-                     cart.add(new FoodProduct(foodMenuItems[0],2.50,quantity,100));
-                     System.out.println("Item added to cart!");
-                     foodMenu();
-                     break;
-            case 2:  quantity = Validator.getPositiveInt("Quantity: ");
-                     cart.add(new FoodProduct(foodMenuItems[1],3.00,quantity, 200));
-                     System.out.println("\nItem added to cart!\n");
-                     foodMenu();
-                     break;
-            case 3:  catalogMenu();
-                     break;
-        } */
     }
 
     private void drinkMenu() {
-        String[] drinkMenuItems = {"Milk","Soda","Return to Catalog"};
-        
         System.out.println("\nDrinks\n-------");
-        Menu.printMenu(drinkMenuItems);
+        catalog.printDrinkCatalog();
         
-        int choice = Validator.getPositiveInt("Item: ");
-        int quantity;
-                
-        switch (choice) {
-            case 1:  quantity = Validator.getPositiveInt("Quantity: ");
-                     cart.add(new DrinkProduct(drinkMenuItems[0],2.50,quantity,100));
-                     System.out.println("Item added to cart!");
-                     drinkMenu();
-                     break;
-            case 2:  quantity = Validator.getPositiveInt("Quantity: ");
-                     cart.add(new DrinkProduct(drinkMenuItems[1],3.00,quantity, 200));
-                     System.out.println("\nItem added to cart!\n");
-                     drinkMenu();
-                     break;
-            case 3:  catalogMenu();
-                     break;
+        int choice = Validator.getMenuChoice("Item: ");
+        if (choice >= 1 && choice <= catalog.drinkCatalog.size()) {
+            int quantity = Validator.getMenuChoice("Quantity: ");
+            DrinkProduct selection = new DrinkProduct(
+                    catalog.drinkCatalog.get(choice-1).getProductName(),
+                    catalog.drinkCatalog.get(choice-1).getPrice(),
+                    catalog.drinkCatalog.get(choice-1).getQuantity(),
+                    catalog.drinkCatalog.get(choice-1).getOunces());
+            selection.setQuantity(quantity);
+            Cart.addToCart(selection);
+            System.out.println("\nItem added to cart!\n");
+            drinkMenu();
+        } else {
+            catalogMenu();
         }
     }
 
@@ -122,7 +102,7 @@ public class Shop {
         
         NumberFormat numberFormatter = NumberFormat.getCurrencyInstance();
         
-        for(Product item : cart) {
+        for(Product item : cart.cartList) {
             System.out.println("\n" + item.getProductName());
             System.out.println("Price: " + numberFormatter.format((item.getQuantity() * item.getPrice())));
             System.out.println(item.getQuantity() + "\n");

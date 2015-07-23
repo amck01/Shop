@@ -13,36 +13,42 @@ import java.util.ArrayList;
  */
 public class Cart {
     
-    /*TODO - make Cart an actual object with an ArrayList field, and constructor that is called from main method*/
+    public static ArrayList<Product> cartList = new ArrayList<Product>();
     
-    public static void initializeCart() {
-        Shop.cart = new ArrayList<Product>();
-    }
-    
-    public static void addToCart(Product selection) {
-        if (Shop.cart.isEmpty()) {
-            #Shop.cart.add(selection);
-            Shop.cart.add(new FoodProduct(selection.getProductName(),selection.getPrice(), selection.getQuantity(), selection.getCalories());
+    public static void addToCart(FoodProduct selection) {
+        if (cartList.isEmpty()) {
+            cartList.add(new FoodProduct(selection.getProductName(),selection.getPrice(), selection.getQuantity(), selection.getCalories()));
         } else {
-            /*for (Product cartProduct : Shop.cart) {
-                if (selection.getProductName().equals(cartProduct.getProductName())) {
-                    cartProduct.setQuantity(cartProduct.getQuantity() + selection.getQuantity());
-                } else {
-                    Shop.cart.add(selection);
-                }
-            }*/
             boolean existsInCart = false;
-            for (int i = 0; i < Shop.cart.size(); i++) {
-                if (selection.getProductName().equals(Shop.cart.get(i).getProductName())) {
-                    Shop.cart.get(i).setQuantity(Shop.cart.get(i).getQuantity() + selection.getQuantity());
+            for (int i = 0; i < cartList.size(); i++) {
+                if (selection.getProductName().equals(cartList.get(i).getProductName())) {
+                    cartList.get(i).setQuantity(cartList.get(i).getQuantity() + selection.getQuantity());
                     existsInCart = true;
                     break;
                 }
             }
                 
             if (existsInCart == false) {
-                    #Shop.cart.add(selection);
-                    Shop.cart.add(new FoodProduct(selection.getProductName(),selection.getPrice(), selection.getQuantity(), selection.getCalories());
+                cartList.add(new FoodProduct(selection.getProductName(),selection.getPrice(), selection.getQuantity(), selection.getCalories()));
+            }
+        }
+    }
+    
+    public static void addToCart(DrinkProduct selection) {
+        if (cartList.isEmpty()) {
+            cartList.add(new DrinkProduct(selection.getProductName(),selection.getPrice(), selection.getQuantity(), selection.getOunces()));
+        } else {
+            boolean existsInCart = false;
+            for (int i = 0; i < cartList.size(); i++) {
+                if (selection.getProductName().equals(cartList.get(i).getProductName())) {
+                    cartList.get(i).setQuantity(cartList.get(i).getQuantity() + selection.getQuantity());
+                    existsInCart = true;
+                    break;
+                }
+            }
+                
+            if (existsInCart == false) {
+                cartList.add(new DrinkProduct(selection.getProductName(),selection.getPrice(), selection.getQuantity(), selection.getOunces()));
             }
         }
     }
