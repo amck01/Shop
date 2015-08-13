@@ -30,9 +30,11 @@ public class Shop {
         
         switch (choice) {
             case 1: catalogMenu();
-            case 2: viewCart();    
-                
-            case 5: System.exit(0); 
+                    break;
+            case 2: viewCart(); 
+                    break;
+            case 5: Cart.saveCart();
+                    System.exit(0); 
                     break;
         }
     }

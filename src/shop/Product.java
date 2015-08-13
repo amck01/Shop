@@ -1,11 +1,13 @@
 
 package shop;
 
+import java.io.Serializable;
+
 /**
  *
  * @author kb0m
  */
-public abstract class Product {
+public abstract class Product implements Serializable {
     
     private String productName;
     private double price;

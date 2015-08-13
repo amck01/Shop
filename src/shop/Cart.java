@@ -5,6 +5,9 @@
  */
 package shop;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -50,6 +53,19 @@ public class Cart {
             if (existsInCart == false) {
                 cartList.add(new DrinkProduct(selection.getProductName(),selection.getPrice(), selection.getQuantity(), selection.getOunces()));
             }
+        }
+    }
+    
+    public static void saveCart() {
+        try {
+            FileOutputStream fos = new FileOutputStream("cart.ser");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(Shop.cart.cartList);
+            oos.close();
+            fos.close();
+        }
+        catch(IOException e){
+            e.printStackTrace();
         }
     }
 }

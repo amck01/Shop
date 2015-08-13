@@ -5,11 +5,13 @@
  */
 package shop;
 
+import java.io.Serializable;
+
 /**
  *
  * @author kb0m
  */
-public class FoodProduct extends Product {
+public class FoodProduct extends Product implements Serializable {
     private int calories;
 
     public FoodProduct(String productName, double price, int quantity, int calories) {
