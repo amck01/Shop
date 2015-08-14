@@ -15,13 +15,14 @@ public class Shop {
         
     public static void main(String[] args) {      
         catalog.initializeCatalog();
+        Cart.restoreCart();
         Shop shop = new Shop();
         shop.mainMenu();
         
     }
     
     private void mainMenu() {
-        String[] mainMenuItems = {"Catalog","View Cart","Checkout","Order Lookup","Exit"};
+        String[] mainMenuItems = {"Catalog","View Cart","Clear Cart","Checkout","Order Lookup","Exit"};
         
         System.out.println("\nShop\n----");
         Menu.printMenu(mainMenuItems);
@@ -33,7 +34,10 @@ public class Shop {
                     break;
             case 2: viewCart(); 
                     break;
-            case 5: Cart.saveCart();
+            case 3: Cart.clearCart(cart);
+                    mainMenu();
+                    break;
+            case 6: Cart.saveCart(cart);
                     System.exit(0); 
                     break;
         }

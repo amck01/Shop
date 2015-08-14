@@ -5,8 +5,10 @@
  */
 package shop;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
@@ -56,16 +58,32 @@ public class Cart {
         }
     }
     
-    public static void saveCart() {
+    public static void saveCart(Cart cart) {
         try {
             FileOutputStream fos = new FileOutputStream("cart.ser");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(Shop.cart.cartList);
+            oos.writeObject(cart.cartList);
             oos.close();
             fos.close();
         }
         catch(IOException e){
             e.printStackTrace();
         }
+    }
+    
+    public static void restoreCart() {
+        try {
+            FileInputStream fis = new FileInputStream("cart.ser");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            Cart.cartList = (ArrayList<Product>) ois.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void clearCart(Cart cart) {
+        cart.cartList.clear();
     }
 }
