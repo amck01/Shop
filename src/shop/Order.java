@@ -30,8 +30,14 @@ public class Order {
                 stringBuilder.append(order.get(i).getProductName() + ",");
                 stringBuilder.append(order.get(i).getPrice() + ",");
                 stringBuilder.append(order.get(i).getQuantity() + ",");
-                stringBuilder.append(((FoodProduct) order.get(i)).getCalories() + ",");
-                stringBuilder.append(((DrinkProduct)order.get(i)).getOunces() + ";");
+                if (order.get(i) instanceof FoodProduct) {
+                    stringBuilder.append(((FoodProduct) order.get(i)).getCalories() + ",");
+                    stringBuilder.append(";");
+                } else if (order.get(i) instanceof DrinkProduct) {
+                    stringBuilder.append(",");
+                    stringBuilder.append(((DrinkProduct)order.get(i)).getOunces() + ";");
+                }
+                
             }
         } catch (IOException e) {
             e.printStackTrace();
