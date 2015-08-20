@@ -1,6 +1,7 @@
 
 package shop;
 
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class Shop {
     }
     
     private void mainMenu() {
-        String[] mainMenuItems = {"Catalog","View Cart","Clear Cart","Checkout","Order Lookup","Exit"};
+        final String[] mainMenuItems = {"Catalog","View Cart","Clear Cart","Checkout","Order Lookup","Exit"};
         
         System.out.println("\nShop\n----");
         Menu.printMenu(mainMenuItems);
@@ -37,14 +38,27 @@ public class Shop {
             case 3: Cart.clearCart(cart);
                     mainMenu();
                     break;
+            case 4: // TODO - Checkout
+                    int temp = 0;
+                    try {
+                        temp = Order.getNextID();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(temp);
+                    break;
+            case 5: // TODO - Order Lookup
+                    break;
             case 6: Cart.saveCart(cart);
                     System.exit(0); 
                     break;
         }
     }
     
+    // TODO - Condense menu methods?
+    
     private void catalogMenu() {
-        String[] catalogMenuItems = {"Food","Drink","Return to Main Menu"};
+        final String[] catalogMenuItems = {"Food","Drink","Return to Main Menu"};
         
         System.out.println("\nCatalog\n-------");
         Menu.printMenu(catalogMenuItems);

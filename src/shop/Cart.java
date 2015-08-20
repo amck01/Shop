@@ -10,6 +10,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -72,14 +75,17 @@ public class Cart {
     }
     
     public static void restoreCart() {
-        try {
-            FileInputStream fis = new FileInputStream("cart.ser");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            Cart.cartList = (ArrayList<Product>) ois.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        Path cartFile = Paths.get("cart.ser");
+        if (Files.exists(cartFile)) {
+            try {
+                FileInputStream fis = new FileInputStream("cart.ser");
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                Cart.cartList = (ArrayList<Product>) ois.readObject();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
     
