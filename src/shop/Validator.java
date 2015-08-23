@@ -9,7 +9,7 @@ import java.util.Scanner;
  */
 public class Validator {
     
-    public static int getMenuChoice(String textPrompt, int numOfOptions) {
+    public static int getInt(String textPrompt, int numOfOptions) {
         Scanner sc = new Scanner(System.in);
         
         int choice = 0;
@@ -28,7 +28,7 @@ public class Validator {
         return choice;
     }
     
-    public static int getMenuChoice(String textPrompt) {
+    public static int getInt(String textPrompt) {
         Scanner sc = new Scanner(System.in);
         
         int choice = 0;

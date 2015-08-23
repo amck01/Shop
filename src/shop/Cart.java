@@ -67,7 +67,6 @@ public class Cart {
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(cart.cartList);
             oos.close();
-            fos.close();
         }
         catch(IOException e){
             e.printStackTrace();
@@ -81,6 +80,7 @@ public class Cart {
                 FileInputStream fis = new FileInputStream("cart.ser");
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 Cart.cartList = (ArrayList<Product>) ois.readObject();
+                ois.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {

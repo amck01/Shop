@@ -10,8 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -22,25 +20,25 @@ public class Order {
     private ArrayList<Product> order;
     private int orderID; 
     
+    public Order(ArrayList<Product> cart) {
+        this.order = new ArrayList<>(cart);
+    }     
+    
+    @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        try {
-            stringBuilder.append(getNextID() + ";");
-            for (int i = 0; i < order.size(); i++) {
-                stringBuilder.append(order.get(i).getProductName() + ",");
-                stringBuilder.append(order.get(i).getPrice() + ",");
-                stringBuilder.append(order.get(i).getQuantity() + ",");
-                if (order.get(i) instanceof FoodProduct) {
-                    stringBuilder.append(((FoodProduct) order.get(i)).getCalories() + ",");
-                    stringBuilder.append(";");
-                } else if (order.get(i) instanceof DrinkProduct) {
-                    stringBuilder.append(",");
-                    stringBuilder.append(((DrinkProduct)order.get(i)).getOunces() + ";");
-                }
-                
+        stringBuilder.append(orderID + ";");
+        for (int i = 0; i < order.size(); i++) {
+            stringBuilder.append(order.get(i).getProductName() + ",");
+            stringBuilder.append(order.get(i).getPrice() + ",");
+            stringBuilder.append(order.get(i).getQuantity() + ",");
+            if (order.get(i) instanceof FoodProduct) {
+                stringBuilder.append(((FoodProduct) order.get(i)).getCalories() + ",");
+                stringBuilder.append(";");
+            } else if (order.get(i) instanceof DrinkProduct) {
+                stringBuilder.append(",");
+                stringBuilder.append(((DrinkProduct)order.get(i)).getOunces() + ";");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         
         return stringBuilder.toString();
@@ -48,16 +46,23 @@ public class Order {
     
     public static int getNextID() throws IOException {
         Path currentIDFile = Paths.get("currentID.txt");
-        int currentID = 1;
+        int currentID;
         if (Files.exists(currentIDFile)) {
-            try {
+            try {                
                 BufferedReader bufferedReader = new BufferedReader(new FileReader("currentID.txt"));
                 currentID = Integer.parseInt(bufferedReader.readLine());
+                bufferedReader.close();
+                
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("currentID.txt",false));
+                currentID++;
+                bufferedWriter.write(Integer.toString(currentID));
+                bufferedWriter.close();
+                return currentID;
             }
             catch (IOException e) {
                 e.printStackTrace();
             }
-            return currentID;
+            return 0;
         }
         else {
             try {
@@ -86,7 +91,9 @@ public class Order {
             Files.createFile(ordersPath);
         }
         
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("orders.txt"));
-        bufferedWriter.write(order.toString());
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("orders.txt", true));
+        bufferedWriter.write(this.toString());
+        bufferedWriter.newLine();
+        bufferedWriter.close();
     }
 }

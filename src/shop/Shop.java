@@ -1,9 +1,17 @@
 
 package shop;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,7 +22,7 @@ public class Shop {
     public static Catalog catalog = new Catalog();
     public static Cart cart = new Cart();
         
-    public static void main(String[] args) {      
+    public static void main(String[] args) throws IOException {      
         catalog.initializeCatalog();
         Cart.restoreCart();
         Shop shop = new Shop();
@@ -22,13 +30,13 @@ public class Shop {
         
     }
     
-    private void mainMenu() {
+    private void mainMenu() throws IOException {
         final String[] mainMenuItems = {"Catalog","View Cart","Clear Cart","Checkout","Order Lookup","Exit"};
         
         System.out.println("\nShop\n----");
         Menu.printMenu(mainMenuItems);
         
-        int choice = Validator.getMenuChoice("Choice: ", mainMenuItems.length);
+        int choice = Validator.getInt("Choice: ", mainMenuItems.length);
         
         switch (choice) {
             case 1: catalogMenu();
@@ -38,16 +46,9 @@ public class Shop {
             case 3: Cart.clearCart(cart);
                     mainMenu();
                     break;
-            case 4: // TODO - Checkout
-                    int temp = 0;
-                    try {
-                        temp = Order.getNextID();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println(temp);
+            case 4: checkout();
                     break;
-            case 5: // TODO - Order Lookup
+            case 5: orderLookup();
                     break;
             case 6: Cart.saveCart(cart);
                     System.exit(0); 
@@ -57,13 +58,13 @@ public class Shop {
     
     // TODO - Condense menu methods?
     
-    private void catalogMenu() {
+    private void catalogMenu() throws IOException {
         final String[] catalogMenuItems = {"Food","Drink","Return to Main Menu"};
         
         System.out.println("\nCatalog\n-------");
         Menu.printMenu(catalogMenuItems);
         
-        int choice = Validator.getMenuChoice("Choice: ", catalogMenuItems.length);
+        int choice = Validator.getInt("Choice: ", catalogMenuItems.length);
         
         switch (choice) {
             case 1:  foodMenu();
@@ -75,13 +76,13 @@ public class Shop {
         }
     }
 
-    private void foodMenu() {
+    private void foodMenu() throws IOException {
         System.out.println("\nFood\n-------");
         catalog.printFoodCatalog();
         
-        int choice = Validator.getMenuChoice("Item: ");
+        int choice = Validator.getInt("Item: ");
         if (choice >= 1 && choice <= catalog.foodCatalog.size()) {
-            int quantity = Validator.getMenuChoice("Quantity: ");
+            int quantity = Validator.getInt("Quantity: ");
             FoodProduct selection = new FoodProduct(
                     catalog.foodCatalog.get(choice-1).getProductName(),
                     catalog.foodCatalog.get(choice-1).getPrice(),
@@ -96,13 +97,13 @@ public class Shop {
         }
     }
 
-    private void drinkMenu() {
+    private void drinkMenu() throws IOException {
         System.out.println("\nDrinks\n-------");
         catalog.printDrinkCatalog();
         
-        int choice = Validator.getMenuChoice("Item: ");
+        int choice = Validator.getInt("Item: ");
         if (choice >= 1 && choice <= catalog.drinkCatalog.size()) {
-            int quantity = Validator.getMenuChoice("Quantity: ");
+            int quantity = Validator.getInt("Quantity: ");
             DrinkProduct selection = new DrinkProduct(
                     catalog.drinkCatalog.get(choice-1).getProductName(),
                     catalog.drinkCatalog.get(choice-1).getPrice(),
@@ -117,7 +118,7 @@ public class Shop {
         }
     }
 
-    private void viewCart() {        
+    private void viewCart() throws IOException {        
         System.out.print("\nCart\n----");
         
         NumberFormat numberFormatter = NumberFormat.getCurrencyInstance();
@@ -128,5 +129,28 @@ public class Shop {
             System.out.println(item.getQuantity() + "\n");
         }
         mainMenu();
-    } 
+    }
+    
+    private void checkout() throws IOException {
+        Order order = new Order(cart.cartList);
+        order.setOrderID(Order.getNextID());
+        order.writeOrder();
+        System.out.println("\nOrder saved!\n");
+        mainMenu();
+    }
+    
+    private void orderLookup() throws IOException {
+        
+        int choice = Validator.getInt("Order ID: ");
+        //Path ordersPath = Paths.get("orders.txt");
+        
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("orders.txt"));
+        String[] orderLine;
+        do {
+            orderLine = bufferedReader.readLine().split(";");
+        } while (Integer.parseInt(orderLine[0]) != choice);
+        bufferedReader.close();
+        System.out.println(Arrays.toString(orderLine));
+        mainMenu();
+    }
 }
